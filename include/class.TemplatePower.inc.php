@@ -1,4 +1,7 @@
 <?php
+
+// config support for php 8.2
+
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 // +----------------------------------------------------------------------+
 // | TemplatePower:                                                       |
@@ -66,7 +69,7 @@ class TemplatePowerParser
 	*
 	* @access private
     */
-   public function __contruct($tpl_file, $type)
+    public function __construct($tpl_file, $type)
    {
        $this->version      = '3.0.2.2'; // Update support PHP7++
        $this->tpl_base     = array($tpl_file, $type);
@@ -141,7 +144,7 @@ class TemplatePowerParser
             $this->{$tplvar}["content"] = preg_split("/\n/", $tpl_file, -1, PREG_SPLIT_DELIM_CAPTURE);
         } else {
             if (is_readable($tpl_file)) {
-                $this->{$tplvar}["content"] = file( $tpl_file );
+                $this->{$tplvar}["content"] = file_get_contents( $tpl_file );
             } else {
                 die($this->__errorAlert('TemplatePower Error: Couldn\'t open or read [ ' . $tpl_file . ' ]!'));
             }
@@ -410,7 +413,7 @@ class TemplatePower extends TemplatePowerParser
      */
     public function __construct($tpl_file='', $type=T_BYFILE)
     {
-        parent::__contruct($tpl_file, $type);
+        parent::__construct($tpl_file, $type);
 
         $this->prepared       = false;
         $this->showUnAssigned = false;
@@ -430,7 +433,7 @@ class TemplatePower extends TemplatePowerParser
     {
         if ($type == T_BYFILE) {
             if (is_readable($stpl_file)) {
-                $serializedTPL = file($stpl_file);
+                $serializedTPL = file_get_contents($stpl_file);
             } else {
                 die( $this->__errorAlert('TemplatePower Error: Can\'t open or read [ '. $stpl_file .' ]!'));
             }
